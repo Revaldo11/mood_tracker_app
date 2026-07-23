@@ -43,53 +43,51 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: PageView(
-          controller: _pageController,
-          physics: const NeverScrollableScrollPhysics(),
-          onPageChanged: (page) {
-            _currentPage.value = page;
-            _database.saveOnboardingScreen(page);
-          },
-          children: [
-            _IntroPage(
-              animation: 'assets/animation/waving_hand.json',
-              title: 'Welcome to Mood Tracker',
-              subtitle: 'Your personal mental health companion',
-              buttonText: 'Get Started',
-              onNext: _nextPage,
-            ),
-            _InfoPage(
-              currentStep: 0,
-              animation: 'assets/animation/meditation.json',
-              title: 'Why Track Your Mood?',
-              items: const [
-                'Understand your emotional patterns',
-                'Identify triggers and improvements',
-                'Build consistent habit',
-              ],
-              onNext: _nextPage,
-              onSkip: _goToFirstMood,
-            ),
-            _InfoPage(
-              currentStep: 1,
-              animation: 'assets/animation/daily_activity.json',
-              title: 'How It Works',
-              items: const [
-                'Select your mood emoji',
-                'Add optional notes',
-                'View your mood history & patterns',
-              ],
-              footer: 'Your insights, your journey',
-              onNext: _nextPage,
-              onSkip: _completeWithoutMood,
-            ),
-            _FirstMoodPage(
-              moodController: _moodController,
-              onComplete: _completeWithMood,
-            ),
-          ],
-        ),
+      body: PageView(
+        controller: _pageController,
+        physics: const NeverScrollableScrollPhysics(),
+        onPageChanged: (page) {
+          _currentPage.value = page;
+          _database.saveOnboardingScreen(page);
+        },
+        children: [
+          _IntroPage(
+            animation: 'assets/animation/waving_hand.json',
+            title: 'Welcome to Mood Tracker',
+            subtitle: 'Your personal mental health companion',
+            buttonText: 'Get Started',
+            onNext: _nextPage,
+          ),
+          _InfoPage(
+            currentStep: 0,
+            animation: 'assets/animation/meditation.json',
+            title: 'Why Track Your Mood?',
+            items: const [
+              'Understand your emotional patterns',
+              'Identify triggers and improvements',
+              'Build consistent habit',
+            ],
+            onNext: _nextPage,
+            onSkip: _goToFirstMood,
+          ),
+          _InfoPage(
+            currentStep: 1,
+            animation: 'assets/animation/daily_activity.json',
+            title: 'How It Works',
+            items: const [
+              'Select your mood emoji',
+              'Add optional notes',
+              'View your mood history & patterns',
+            ],
+            footer: 'Your insights, your journey',
+            onNext: _nextPage,
+            onSkip: _completeWithoutMood,
+          ),
+          _FirstMoodPage(
+            moodController: _moodController,
+            onComplete: _completeWithMood,
+          ),
+        ],
       ),
     );
   }
@@ -156,8 +154,9 @@ class _IntroPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return _OnboardingScaffold(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          const SizedBox(height: 20),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.07),
           Text(
             'Mood Tracker',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -167,7 +166,7 @@ class _IntroPage extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           const Text('😊', style: TextStyle(fontSize: 42)),
-          const Spacer(),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.1),
           Lottie.asset(animation, height: 220, repeat: true),
           const SizedBox(height: 24),
           _AnimatedText(title: title, subtitle: subtitle),
@@ -251,7 +250,7 @@ class _FirstMoodPage extends StatelessWidget {
     return _OnboardingScaffold(
       child: Column(
         children: [
-          const SizedBox(height: 28),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.08),
           Text(
             'How are you feeling today?',
             textAlign: TextAlign.center,
@@ -261,7 +260,7 @@ class _FirstMoodPage extends StatelessWidget {
                 ),
           ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.18),
           const Spacer(),
-          Lottie.asset('assets/animation/first mood.json', height: 170, repeat: true),
+          Lottie.asset('assets/animation/first mood.json', height: 280, repeat: true),
           const SizedBox(height: 28),
           Obx(
             () => Row(
