@@ -8,6 +8,9 @@ class LocalDatabase implements MoodRepository {
   LocalDatabase(this._box);
 
   static const boxName = 'mood_entries';
+  static const _onboardingCompletedKey = 'onboarding_completed';
+  static const _onboardingStartedAtKey = 'onboarding_started_at';
+  static const _onboardingScreenKey = 'onboarding_screen';
 
   final Box _box;
 
@@ -32,5 +35,30 @@ class LocalDatabase implements MoodRepository {
   Future<void> saveEntry(MoodEntry entry) async {
     final model = MoodEntryModel.fromEntry(entry);
     await _box.put(entry.id, model.toMap());
+  }
+
+  bool get isOnboardingCompleted {
+    return _box.get(_onboardingCompletedKey, defaultValue: false) as bool;
+  }
+
+  int get onboardingScreen {
+    return _box.get(_onboardingScreenKey, defaultValue: 0) as int;
+  }
+
+  Future<void> startOnboarding() async {
+    if (!_box.containsKey(_onboardingStartedAtKey)) {
+      await _box.put(
+        _onboardingStartedAtKey,
+        DateTime.now().toIso8601String(),
+      );
+    }
+  }
+
+  Future<void> saveOnboardingScreen(int screen) async {
+    await _box.put(_onboardingScreenKey, screen);
+  }
+
+  Future<void> completeOnboarding() async {
+    await _box.put(_onboardingCompletedKey, true);
   }
 }

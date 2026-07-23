@@ -50,7 +50,10 @@ class MoodController extends GetxController {
     selectedEmoji.value = option.emoji;
   }
 
-  Future<void> saveMood() async {
+  Future<void> saveMood({
+    String title = 'Mood saved',
+    String message = 'Your daily mood has been recorded.',
+  }) async {
     final entry = MoodEntry(
       id: DateTime.now().microsecondsSinceEpoch.toString(),
       mood: selectedMood.value,
@@ -66,8 +69,8 @@ class MoodController extends GetxController {
 
     if (!Get.testMode) {
       Get.snackbar(
-        'Mood saved',
-        'Your daily mood has been recorded.',
+        title,
+        message,
         snackPosition: SnackPosition.BOTTOM,
         margin: const EdgeInsets.all(16),
         borderRadius: 8,

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 
+import '../../data/sources/local_database.dart';
 import 'main_shell.dart';
+import 'onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,8 +21,11 @@ class _SplashScreenState extends State<SplashScreen> {
       if (!mounted) {
         return;
       }
+      final database = Get.find<LocalDatabase>();
       Get.off(
-        () => const MainShell(),
+        () => database.isOnboardingCompleted
+            ? const MainShell()
+            : const OnboardingScreen(),
         transition: Transition.fadeIn,
         duration: const Duration(milliseconds: 450),
       );

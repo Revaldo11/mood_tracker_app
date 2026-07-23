@@ -8,6 +8,7 @@ import 'presentation/screens/splash_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final database = await LocalDatabase.init();
+  Get.put(database);
   Get.put(MoodController(database));
   runApp(const MoodTrackerApp());
 }
