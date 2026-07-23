@@ -1,4 +1,4 @@
-# mood_tracker
+# mood_trackers
 
 A new Flutter project.
 
