@@ -10,6 +10,12 @@ class MainShell extends GetView<MoodController> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (controller.shouldShowWarning()) {
+        controller.showDataWarningDialog();
+      }
+    });
+    
     return Obx(
       () => Scaffold(
         body: IndexedStack(
