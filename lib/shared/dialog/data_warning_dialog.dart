@@ -79,8 +79,9 @@ class DataWarningDialog extends StatelessWidget {
   }
 
   Widget _buildWarningSection() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12),
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -128,8 +129,9 @@ class DataWarningDialog extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12),
       child: Container(
         decoration: BoxDecoration(
-          color: Get.theme.hintColor.withOpacity(0.1),
+          color: Colors.amber.withOpacity(0.2),
           borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.amber)
         ),
         padding: const EdgeInsets.all(12),
         child: Text(
