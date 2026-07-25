@@ -27,6 +27,7 @@ class DataWarningDialog extends StatelessWidget {
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      backgroundColor: Colors.white,
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -149,7 +150,7 @@ class DataWarningDialog extends StatelessWidget {
         ),
         padding: const EdgeInsets.all(12),
         child: Text(
-          '💡 Tip: Regular export of your data to email or cloud storage for safety',
+          'Regular export of your data to email or cloud storage for safety',
           style: Get.textTheme.bodySmall?.copyWith(
             color: Get.theme.textTheme.bodySmall?.color,
           ),
