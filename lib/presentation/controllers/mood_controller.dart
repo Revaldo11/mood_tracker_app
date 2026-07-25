@@ -1,4 +1,5 @@
 import 'package:confetti/confetti.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -29,7 +30,9 @@ class MoodController extends GetxController {
   final MoodRepository _repository;
   final notesController = TextEditingController();
   final notesFocusNode = FocusNode();
-  final confettiController = ConfettiController(duration: const Duration(seconds: 2));
+  final confettiController = ConfettiController(
+    duration: const Duration(seconds: 2),
+  );
 
   final entries = <MoodEntry>[].obs;
   final selectedMood = 4.obs;
@@ -38,7 +41,13 @@ class MoodController extends GetxController {
   final isNotesFocused = false.obs;
   final touchedChartDate = Rxn<DateTime>();
 
-  final moods = const [MoodOption(1, '😢', Color(0xFFFF6B6B), 'Sad'), MoodOption(2, '😕', Color(0xFFFFA500), 'Meh'), MoodOption(3, '😐', Color(0xFFFFD700), 'Neutral'), MoodOption(4, '🙂', Color(0xFF98D8C8), 'Good'), MoodOption(5, '😊', Color(0xFF6BCB77), 'Happy')];
+  final moods = const [
+    MoodOption(1, '😢', Color(0xFFFF6B6B), 'Sad'),
+    MoodOption(2, '😕', Color(0xFFFFA500), 'Meh'),
+    MoodOption(3, '😐', Color(0xFFFFD700), 'Neutral'),
+    MoodOption(4, '🙂', Color(0xFF98D8C8), 'Good'),
+    MoodOption(5, '😊', Color(0xFF6BCB77), 'Happy'),
+  ];
 
   @override
   void onInit() {
@@ -82,16 +91,46 @@ class MoodController extends GetxController {
   ///
   /// Throws:
   /// - Propagates repository write/read errors.
-  Future<void> saveMood({String title = 'Mood saved', String message = 'Your daily mood has been recorded.'}) async {
-    final entry = MoodEntry(id: DateTime.now().microsecondsSinceEpoch.toString(), mood: selectedMood.value, notes: notesController.text.trim(), timestamp: DateTime.now(), emoji: selectedEmoji.value);
+  /// 
+  final RxBool isLoadingSubmit = false.obs;
 
-    await _repository.saveEntry(entry);
-    notesController.clear();
-    confettiController.play();
-    await loadEntries();
+  Future<void> saveMood({
+    String title = 'Mood saved',
+    String message = 'Your daily mood has been recorded.',
+  }) async {
+    if (isLoadingSubmit.value) return;
 
-    if (!Get.testMode) {
-      Get.snackbar(title, message, snackPosition: SnackPosition.BOTTOM, margin: const EdgeInsets.all(16), borderRadius: 8, duration: const Duration(seconds: 2));
+    isLoadingSubmit.value = true;
+
+    try {
+      final entry = MoodEntry(
+        id: DateTime.now().microsecondsSinceEpoch.toString(),
+        mood: selectedMood.value,
+        notes: notesController.text.trim(),
+        timestamp: DateTime.now(),
+        emoji: selectedEmoji.value,
+      );
+
+      // Simulate saving process (minimum 1 second)
+      await Future.delayed(const Duration(seconds: 1));
+
+      await _repository.saveEntry(entry);
+
+      notesController.clear();
+      confettiController.play();
+      await loadEntries();
+
+      Get.snackbar(
+        title,
+        message,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: const EdgeInsets.all(16),
+        borderRadius: 8,
+        duration: const Duration(seconds: 2),
+      );
+
+    } finally {
+      isLoadingSubmit.value = false;
     }
   }
 
@@ -101,10 +140,18 @@ class MoodController extends GetxController {
   /// Returns entries from the last seven calendar days (inclusive).
   List<MoodEntry> get lastSevenDaysEntries {
     final today = DateTime.now();
-    final start = DateTime(today.year, today.month, today.day).subtract(const Duration(days: 6));
+    final start = DateTime(
+      today.year,
+      today.month,
+      today.day,
+    ).subtract(const Duration(days: 6));
 
     return entries.where((entry) {
-      final date = DateTime(entry.timestamp.year, entry.timestamp.month, entry.timestamp.day);
+      final date = DateTime(
+        entry.timestamp.year,
+        entry.timestamp.month,
+        entry.timestamp.day,
+      );
       return !date.isBefore(start);
     }).toList();
   }
@@ -113,7 +160,9 @@ class MoodController extends GetxController {
   int get currentStreak {
     var streak = 0;
     var day = DateTime.now();
-    final loggedDays = entries.map((entry) => DateFormat('yyyy-MM-dd').format(entry.timestamp)).toSet();
+    final loggedDays = entries
+        .map((entry) => DateFormat('yyyy-MM-dd').format(entry.timestamp))
+        .toSet();
 
     while (loggedDays.contains(DateFormat('yyyy-MM-dd').format(day))) {
       streak++;
@@ -136,7 +185,9 @@ class MoodController extends GetxController {
       counts[entry.mood] = (counts[entry.mood] ?? 0) + 1;
     }
 
-    final mood = counts.entries.reduce((current, next) => next.value > current.value ? next : current);
+    final mood = counts.entries.reduce(
+      (current, next) => next.value > current.value ? next : current,
+    );
 
     return moods.firstWhere((option) => option.value == mood.key);
   }
@@ -154,7 +205,9 @@ class MoodController extends GetxController {
   /// Returns `null` when no entry exists for that day.
   MoodEntry? entryForDate(DateTime date) {
     final key = DateFormat('yyyy-MM-dd').format(date);
-    return entries.firstWhereOrNull((entry) => DateFormat('yyyy-MM-dd').format(entry.timestamp) == key);
+    return entries.firstWhereOrNull(
+      (entry) => DateFormat('yyyy-MM-dd').format(entry.timestamp) == key,
+    );
   }
 
   void _selectPreviousMoodSuggestion() {
@@ -184,10 +237,12 @@ class MoodController extends GetxController {
       bool shown = prefs.getBool(DATA_WARNING_SHOWN_KEY) ?? false;
       dataWarningShown.value = shown;
     } catch (e) {
-      print('Error loading data warning status: $e');
+      if (kDebugMode) {
+        print('Error loading data warning status: $e');
+      }
     }
   }
-  
+
   /// Persists data warning as shown.
   ///
   /// Side effects:
@@ -202,10 +257,12 @@ class MoodController extends GetxController {
       await prefs.setBool(DATA_WARNING_SHOWN_KEY, true);
       dataWarningShown.value = true;
     } catch (e) {
-      print('Error saving data warning status: $e');
+      if (kDebugMode) {
+        print('Error saving data warning status: $e');
+      }
     }
   }
-  
+
   /// Returns whether data warning dialog should be shown.
   bool shouldShowWarning() {
     return !dataWarningShown.value;

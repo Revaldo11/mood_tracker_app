@@ -88,7 +88,7 @@ class DataWarningDialog extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 12.0),
       child: Container(
         height: 0.5,
-        color: Get.theme.dividerColor.withOpacity(0.3),
+        color: Get.theme.dividerColor.withValues(alpha: 0.3),
       ),
     );
   }
@@ -141,10 +141,10 @@ class DataWarningDialog extends StatelessWidget {
 
   Widget _buildTipSection(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12),
+      padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.amber.withOpacity(0.2),
+          color: Colors.amber.withValues(alpha: 0.2),
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: Colors.amber)
         ),
@@ -160,8 +160,10 @@ class DataWarningDialog extends StatelessWidget {
   }
 
   Widget _buildCheckbox(RxBool dontShowAgain) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Row(
         children: [
           Obx(
