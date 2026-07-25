@@ -222,7 +222,9 @@ class MoodController extends GetxController {
 
     Get.dialog(
       const DataWarningDialog(),
-      barrierDismissible: false,  // ← IMPORTANT: User MUST tap button
+      barrierDismissible: false,
+      transitionCurve: Curves.easeInOutCubic,
+      transitionDuration: Duration(milliseconds: 500),
     );
   }
 
