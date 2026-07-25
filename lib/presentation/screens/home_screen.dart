@@ -28,23 +28,23 @@ class HomeScreen extends GetView<MoodController> {
               Text(
                 _greeting(),
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.w800,
-                      color: const Color(0xFF1F2933),
-                    ),
+                  fontWeight: FontWeight.w800,
+                  color: const Color(0xFF1F2933),
+                ),
               ),
               const SizedBox(height: 6),
               Text(
                 DateFormat('EEEE, d MMMM').format(DateTime.now()),
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: const Color(0xFF637381),
-                    ),
+                  color: const Color(0xFF637381),
+                ),
               ),
               const SizedBox(height: 28),
               Text(
                 'How are you feeling?',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: 16),
               const MoodSelector(),
@@ -88,77 +88,93 @@ class HomeScreen extends GetView<MoodController> {
                 ),
               ),
               const SizedBox(height: 12),
-              SizedBox(
-                height: 54,
-                child: FilledButton.icon(
-                  onPressed: () async {
-                    HapticFeedback.mediumImpact();
-                    await controller.saveMood();
-                  },
-                  icon: const Icon(Icons.celebration_outlined),
-                  label: const Text('Save Mood'),
+              Obx(
+                () => SizedBox(
+                  height: 54,
+                  child: FilledButton.icon(
+                    onPressed: controller.isLoadingSubmit.value
+                        ? null
+                        : () async {
+                            HapticFeedback.mediumImpact();
+                            await controller.saveMood();
+                          },
+                    icon: controller.isLoadingSubmit.value
+                        ? null : const Icon(Icons.celebration_outlined),
+                    label: controller.isLoadingSubmit.value
+                        ? SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                              color: Color(0xFF6BCB77),
+                              trackGap: 2,
+                              strokeWidth: 3,
+                              strokeCap: StrokeCap.round,
+                            ),
+                        )
+                        : const Text('Save Mood'),
+                  ),
                 ),
               ),
               const SizedBox(height: 28),
               Text(
                 'Recent mood',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: 12),
-              Obx(
-                () {
-                  if (controller.recentEntries.isEmpty) {
-                    return _EmptyHistory();
-                  }
+              Obx(() {
+                if (controller.recentEntries.isEmpty) {
+                  return _EmptyHistory();
+                }
 
-                  return Column(
-                    children: controller.recentEntries.map((entry) {
-                      return Container(
-                        margin: const EdgeInsets.only(bottom: 10),
-                        padding: const EdgeInsets.all(14),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: const Color(0xFFE4E7EC)),
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              entry.emoji,
-                              style: const TextStyle(fontSize: 28),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                return Column(
+                  children: controller.recentEntries.map((entry) {
+                    return Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: const Color(0xFFE4E7EC)),
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            entry.emoji,
+                            style: const TextStyle(fontSize: 28),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  DateFormat(
+                                    'EEE, d MMM',
+                                  ).format(entry.timestamp),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                if (entry.notes.isNotEmpty)
                                   Text(
-                                    DateFormat('EEE, d MMM').format(entry.timestamp),
+                                    entry.notes,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
-                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xFF637381),
                                     ),
                                   ),
-                                  if (entry.notes.isNotEmpty)
-                                    Text(
-                                      entry.notes,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        color: Color(0xFF637381),
-                                      ),
-                                    ),
-                                ],
-                              ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ).animate().fadeIn(duration: 250.ms).slideY(begin: 0.12);
-                    }).toList(),
-                  );
-                },
-              ),
+                          ),
+                        ],
+                      ),
+                    ).animate().fadeIn(duration: 250.ms).slideY(begin: 0.12);
+                  }).toList(),
+                );
+              }),
             ],
           ),
         ),
