@@ -5,7 +5,16 @@ import 'package:intl/intl.dart';
 
 import '../controllers/mood_controller.dart';
 
+/// Bar chart visualization for the last seven days of mood logs.
+///
+/// Reads data from [MoodController] and shows tooltip notes when available.
+///
+/// Example:
+/// ```dart
+/// const SizedBox(height: 220, child: MoodChart())
+/// ```
 class MoodChart extends GetView<MoodController> {
+  /// Creates the mood chart widget.
   const MoodChart({super.key});
 
   @override

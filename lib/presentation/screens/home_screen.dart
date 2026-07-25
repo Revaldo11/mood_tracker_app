@@ -8,7 +8,12 @@ import 'package:intl/intl.dart';
 import '../controllers/mood_controller.dart';
 import '../widgets/mood_selector.dart';
 
+/// Primary journaling screen for recording today's mood.
+///
+/// Provides mood selection, optional notes input, save action, and a short
+/// recent-history preview.
 class HomeScreen extends GetView<MoodController> {
+  /// Creates the home screen.
   const HomeScreen({super.key});
 
   @override

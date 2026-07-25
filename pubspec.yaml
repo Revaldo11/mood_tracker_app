@@ -41,7 +41,8 @@ dependencies:
   confetti: ^0.8.0
   flutter_animate: ^4.5.2
   intl: ^0.20.1
-
+  lottie: ^3.3.1
+  shared_preferences: ^2.5.5
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -63,6 +64,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - assets/animation/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

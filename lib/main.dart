@@ -5,14 +5,30 @@ import 'data/sources/local_database.dart';
 import 'presentation/controllers/mood_controller.dart';
 import 'presentation/screens/splash_screen.dart';
 
+/// Application entry point.
+///
+/// Initializes Flutter binding, opens the local database, registers
+/// dependencies in GetX, and starts the app widget tree.
+///
+/// Side effects:
+/// - Initializes Hive local storage.
+/// - Opens local box storage.
+/// - Registers singleton instances in GetX service locator.
+///
+/// Throws:
+/// - Any exception from local database initialization (for example I/O errors)
+///   will propagate and prevent app startup.
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final database = await LocalDatabase.init();
+  Get.put(database);
   Get.put(MoodController(database));
   runApp(const MoodTrackerApp());
 }
 
+/// Root widget for Mood Tracker application.
 class MoodTrackerApp extends StatelessWidget {
+  /// Creates the application root widget.
   const MoodTrackerApp({super.key});
 
   @override

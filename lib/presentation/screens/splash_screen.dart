@@ -2,9 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 
+import '../../data/sources/local_database.dart';
 import 'main_shell.dart';
+import 'onboarding_screen.dart';
 
+/// Startup splash screen.
+///
+/// Shows branded intro animation, then routes user based on onboarding status
+/// stored in local database.
 class SplashScreen extends StatefulWidget {
+  /// Creates splash screen.
   const SplashScreen({super.key});
 
   @override
@@ -15,12 +22,15 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 2400), () {
+    Future.delayed(const Duration(seconds: 3), () {
       if (!mounted) {
         return;
       }
+      final database = Get.find<LocalDatabase>();
       Get.off(
-        () => const MainShell(),
+        () => database.isOnboardingCompleted
+            ? const MainShell()
+            : const OnboardingScreen(),
         transition: Transition.fadeIn,
         duration: const Duration(milliseconds: 450),
       );

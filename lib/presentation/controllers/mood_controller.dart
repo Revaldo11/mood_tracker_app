@@ -2,19 +2,34 @@ import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:mood_tracker/constant/constant.dart';
+import 'package:mood_tracker/shared/dialog/data_warning_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../domain/models/mood_entry.dart';
 import '../../domain/repositories/mood_repository.dart';
 
+/// GetX controller coordinating mood journaling state and persistence.
+///
+/// Responsibilities:
+/// - Keeps UI state for mood selection, notes, tabs, and chart interaction.
+/// - Loads/saves mood entries through [MoodRepository].
+/// - Manages data-warning preference in `SharedPreferences`.
+///
+/// Example:
+/// ```dart
+/// final controller = Get.find<MoodController>();
+/// controller.selectMood(controller.moods.last);
+/// await controller.saveMood();
+/// ```
 class MoodController extends GetxController {
+  /// Creates controller with injected persistence [MoodRepository].
   MoodController(this._repository);
 
   final MoodRepository _repository;
   final notesController = TextEditingController();
   final notesFocusNode = FocusNode();
-  final confettiController = ConfettiController(
-    duration: const Duration(seconds: 2),
-  );
+  final confettiController = ConfettiController(duration: const Duration(seconds: 2));
 
   final entries = <MoodEntry>[].obs;
   final selectedMood = 4.obs;
@@ -23,13 +38,7 @@ class MoodController extends GetxController {
   final isNotesFocused = false.obs;
   final touchedChartDate = Rxn<DateTime>();
 
-  final moods = const [
-    MoodOption(1, '😢', Color(0xFFFF6B6B), 'Sad'),
-    MoodOption(2, '😕', Color(0xFFFFA500), 'Meh'),
-    MoodOption(3, '😐', Color(0xFFFFD700), 'Neutral'),
-    MoodOption(4, '🙂', Color(0xFF98D8C8), 'Good'),
-    MoodOption(5, '😊', Color(0xFF6BCB77), 'Happy'),
-  ];
+  final moods = const [MoodOption(1, '😢', Color(0xFFFF6B6B), 'Sad'), MoodOption(2, '😕', Color(0xFFFFA500), 'Meh'), MoodOption(3, '😐', Color(0xFFFFD700), 'Neutral'), MoodOption(4, '🙂', Color(0xFF98D8C8), 'Good'), MoodOption(5, '😊', Color(0xFF6BCB77), 'Happy')];
 
   @override
   void onInit() {
@@ -40,24 +49,41 @@ class MoodController extends GetxController {
     loadEntries();
   }
 
+  /// Loads all entries from repository and updates suggestion state.
+  ///
+  /// Side effects:
+  /// - Updates [entries], [selectedMood], and [selectedEmoji].
+  ///
+  /// Throws:
+  /// - Propagates repository read errors.
   Future<void> loadEntries() async {
     entries.assignAll(await _repository.getEntries());
     _selectPreviousMoodSuggestion();
   }
 
+  /// Updates currently selected mood option.
   void selectMood(MoodOption option) {
     selectedMood.value = option.value;
     selectedEmoji.value = option.emoji;
   }
 
-  Future<void> saveMood() async {
-    final entry = MoodEntry(
-      id: DateTime.now().microsecondsSinceEpoch.toString(),
-      mood: selectedMood.value,
-      notes: notesController.text.trim(),
-      timestamp: DateTime.now(),
-      emoji: selectedEmoji.value,
-    );
+  /// Creates and stores a mood entry from current form state.
+  ///
+  /// Parameters:
+  /// - [title]: Snackbar title after save.
+  /// - [message]: Snackbar message after save.
+  ///
+  /// Side effects:
+  /// - Writes to repository.
+  /// - Clears notes field.
+  /// - Triggers confetti animation.
+  /// - Reloads entries list from storage.
+  /// - Displays snackbar when not in test mode.
+  ///
+  /// Throws:
+  /// - Propagates repository write/read errors.
+  Future<void> saveMood({String title = 'Mood saved', String message = 'Your daily mood has been recorded.'}) async {
+    final entry = MoodEntry(id: DateTime.now().microsecondsSinceEpoch.toString(), mood: selectedMood.value, notes: notesController.text.trim(), timestamp: DateTime.now(), emoji: selectedEmoji.value);
 
     await _repository.saveEntry(entry);
     notesController.clear();
@@ -65,40 +91,29 @@ class MoodController extends GetxController {
     await loadEntries();
 
     if (!Get.testMode) {
-      Get.snackbar(
-        'Mood saved',
-        'Your daily mood has been recorded.',
-        snackPosition: SnackPosition.BOTTOM,
-        margin: const EdgeInsets.all(16),
-        borderRadius: 8,
-        duration: const Duration(seconds: 2),
-      );
+      Get.snackbar(title, message, snackPosition: SnackPosition.BOTTOM, margin: const EdgeInsets.all(16), borderRadius: 8, duration: const Duration(seconds: 2));
     }
   }
 
+  /// Returns up to three most recent entries.
   List<MoodEntry> get recentEntries => entries.take(3).toList();
 
+  /// Returns entries from the last seven calendar days (inclusive).
   List<MoodEntry> get lastSevenDaysEntries {
     final today = DateTime.now();
-    final start = DateTime(today.year, today.month, today.day)
-        .subtract(const Duration(days: 6));
+    final start = DateTime(today.year, today.month, today.day).subtract(const Duration(days: 6));
 
     return entries.where((entry) {
-      final date = DateTime(
-        entry.timestamp.year,
-        entry.timestamp.month,
-        entry.timestamp.day,
-      );
+      final date = DateTime(entry.timestamp.year, entry.timestamp.month, entry.timestamp.day);
       return !date.isBefore(start);
     }).toList();
   }
 
+  /// Calculates consecutive day streak ending today.
   int get currentStreak {
     var streak = 0;
     var day = DateTime.now();
-    final loggedDays = entries
-        .map((entry) => DateFormat('yyyy-MM-dd').format(entry.timestamp))
-        .toSet();
+    final loggedDays = entries.map((entry) => DateFormat('yyyy-MM-dd').format(entry.timestamp)).toSet();
 
     while (loggedDays.contains(DateFormat('yyyy-MM-dd').format(day))) {
       streak++;
@@ -108,6 +123,9 @@ class MoodController extends GetxController {
     return streak;
   }
 
+  /// Returns the most frequently selected mood in current dataset.
+  ///
+  /// Returns a default "Good" mood option when no entries exist.
   MoodOption get mostCommonMood {
     if (entries.isEmpty) {
       return moods[3];
@@ -118,22 +136,25 @@ class MoodController extends GetxController {
       counts[entry.mood] = (counts[entry.mood] ?? 0) + 1;
     }
 
-    final mood = counts.entries.reduce(
-      (current, next) => next.value > current.value ? next : current,
-    );
+    final mood = counts.entries.reduce((current, next) => next.value > current.value ? next : current);
 
     return moods.firstWhere((option) => option.value == mood.key);
   }
 
+  /// Maps numeric mood [value] to its [MoodOption].
+  ///
+  /// Throws:
+  /// - [StateError] when no matching option exists.
   MoodOption moodOptionByValue(int value) {
     return moods.firstWhere((option) => option.value == value);
   }
 
+  /// Finds entry recorded on the provided calendar [date].
+  ///
+  /// Returns `null` when no entry exists for that day.
   MoodEntry? entryForDate(DateTime date) {
     final key = DateFormat('yyyy-MM-dd').format(date);
-    return entries.firstWhereOrNull(
-      (entry) => DateFormat('yyyy-MM-dd').format(entry.timestamp) == key,
-    );
+    return entries.firstWhereOrNull((entry) => DateFormat('yyyy-MM-dd').format(entry.timestamp) == key);
   }
 
   void _selectPreviousMoodSuggestion() {
@@ -148,6 +169,63 @@ class MoodController extends GetxController {
     selectedEmoji.value = option.emoji;
   }
 
+  final RxBool dataWarningShown = false.obs;
+
+  /// Loads "data warning shown" flag from shared preferences.
+  ///
+  /// Side effects:
+  /// - Updates [dataWarningShown].
+  ///
+  /// Errors:
+  /// - Catches and logs preference access errors without rethrowing.
+  Future<void> loadDataWarningStatus() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      bool shown = prefs.getBool(DATA_WARNING_SHOWN_KEY) ?? false;
+      dataWarningShown.value = shown;
+    } catch (e) {
+      print('Error loading data warning status: $e');
+    }
+  }
+  
+  /// Persists data warning as shown.
+  ///
+  /// Side effects:
+  /// - Writes boolean flag to `SharedPreferences`.
+  /// - Updates [dataWarningShown].
+  ///
+  /// Errors:
+  /// - Catches and logs preference write errors without rethrowing.
+  Future<void> markDataWarningAsShown() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(DATA_WARNING_SHOWN_KEY, true);
+      dataWarningShown.value = true;
+    } catch (e) {
+      print('Error saving data warning status: $e');
+    }
+  }
+  
+  /// Returns whether data warning dialog should be shown.
+  bool shouldShowWarning() {
+    return !dataWarningShown.value;
+  }
+
+  /// Presents non-dismissible data warning dialog when no dialog is open.
+  ///
+  /// Side effects:
+  /// - Pushes a dialog route via GetX navigation.
+  void showDataWarningDialog() {
+    if (Get.isDialogOpen ?? false) {
+      return;
+    }
+
+    Get.dialog(
+      const DataWarningDialog(),
+      barrierDismissible: false,  // ← IMPORTANT: User MUST tap button
+    );
+  }
+
   @override
   void onClose() {
     notesController.dispose();
@@ -158,6 +236,7 @@ class MoodController extends GetxController {
 }
 
 class MoodOption {
+  /// Creates a mood option used by selectors and statistics UI.
   const MoodOption(this.value, this.emoji, this.color, this.label);
 
   final int value;

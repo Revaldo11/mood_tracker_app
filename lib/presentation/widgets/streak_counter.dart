@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
+/// Animated card showing current consecutive mood logging streak.
 class StreakCounter extends StatelessWidget {
+  /// Creates streak counter with required [value].
   const StreakCounter({super.key, required this.value});
 
+  /// Number of consecutive days with at least one mood entry.
   final int value;
 
   @override
