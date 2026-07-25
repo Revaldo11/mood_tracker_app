@@ -93,7 +93,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
               const SizedBox(height: 24),
               Text(
-                'Mood Tracker',
+                'LUMINA',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.w800,
                       color: const Color(0xFF1F2933),

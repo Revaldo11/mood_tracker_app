@@ -60,7 +60,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         children: [
           _IntroPage(
             animation: 'assets/animation/waving_hand.json',
-            title: 'Welcome to Mood Tracker',
+            title: 'Welcome to LUMINA',
             subtitle: 'Your personal mental health companion',
             buttonText: 'Get Started',
             onNext: _nextPage,
@@ -165,7 +165,7 @@ class _IntroPage extends StatelessWidget {
         children: [
           SizedBox(height: MediaQuery.of(context).size.height * 0.07),
           Text(
-            'Mood Tracker',
+            'LUMINA',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w800,
                   color: const Color(0xFF1F2933),
