@@ -20,4 +20,13 @@ abstract class MoodRepository {
   /// Throws:
   /// - Underlying storage exceptions from the concrete implementation.
   Future<void> saveEntry(MoodEntry entry);
+
+  /// Removes mood entry by [id].
+  ///
+  /// Side effects:
+  /// - Deletes entry from underlying storage when key exists.
+  ///
+  /// Throws:
+  /// - Underlying storage exceptions from the concrete implementation.
+  Future<void> removeEntry(String id);
 }

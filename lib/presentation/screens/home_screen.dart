@@ -169,6 +169,16 @@ class HomeScreen extends GetView<MoodController> {
                               ],
                             ),
                           ),
+                          IconButton(
+                            onPressed: () async {
+                              HapticFeedback.selectionClick();
+                              await controller.removeMood(entry.id);
+                            },
+                            icon: const Icon(
+                              Icons.delete_outline,
+                              color: Color(0xFFFF6B6B),
+                            ),
+                          ),
                         ],
                       ),
                     ).animate().fadeIn(duration: 250.ms).slideY(begin: 0.12);

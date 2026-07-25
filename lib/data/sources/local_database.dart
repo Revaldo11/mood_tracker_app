@@ -83,6 +83,11 @@ class LocalDatabase implements MoodRepository {
     await _box.put(entry.id, model.toMap());
   }
 
+  @override
+  Future<void> removeEntry(String id) async {
+    await _box.delete(id);
+  }
+
   /// Indicates whether onboarding has been marked complete.
   bool get isOnboardingCompleted {
     return _box.get(_onboardingCompletedKey, defaultValue: false) as bool;
