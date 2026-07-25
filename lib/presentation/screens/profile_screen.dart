@@ -8,7 +8,9 @@ import '../widgets/mood_chart.dart';
 import '../widgets/streak_counter.dart';
 import '../widgets/wave_background.dart';
 
+/// Statistics/profile screen for viewing mood trends and history.
 class ProfileScreen extends GetView<MoodController> {
+  /// Creates the profile screen.
   const ProfileScreen({super.key});
 
   @override

@@ -5,7 +5,14 @@ import '../controllers/mood_controller.dart';
 import 'home_screen.dart';
 import 'profile_screen.dart';
 
+/// Main post-splash shell with bottom navigation between feature tabs.
+///
+/// Example:
+/// ```dart
+/// Get.off(() => const MainShell());
+/// ```
 class MainShell extends GetView<MoodController> {
+  /// Creates the main shell screen.
   const MainShell({super.key});
 
   @override

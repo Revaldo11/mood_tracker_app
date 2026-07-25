@@ -1,6 +1,10 @@
 import '../../domain/models/mood_entry.dart';
 
+/// Data-layer model for serializing/deserializing mood entries.
+///
+/// Extends [MoodEntry] and adds mapper helpers for local storage.
 class MoodEntryModel extends MoodEntry {
+  /// Creates a serializable mood entry model.
   const MoodEntryModel({
     required super.id,
     required super.mood,
@@ -10,6 +14,15 @@ class MoodEntryModel extends MoodEntry {
     super.intensity,
   });
 
+  /// Builds a model from untyped map data read from local storage.
+  ///
+  /// Parameters:
+  /// - [map]: Serialized mood payload.
+  ///
+  /// Returns a parsed [MoodEntryModel].
+  ///
+  /// Throws:
+  /// - [TypeError] or [FormatException] if map values are invalid.
   factory MoodEntryModel.fromMap(Map<dynamic, dynamic> map) {
     return MoodEntryModel(
       id: map['id'] as String,
@@ -21,6 +34,7 @@ class MoodEntryModel extends MoodEntry {
     );
   }
 
+  /// Converts a domain [entry] to data-layer model.
   factory MoodEntryModel.fromEntry(MoodEntry entry) {
     return MoodEntryModel(
       id: entry.id,
@@ -32,6 +46,9 @@ class MoodEntryModel extends MoodEntry {
     );
   }
 
+  /// Serializes this model into a map for storage.
+  ///
+  /// Returns key/value payload accepted by Hive box storage.
   Map<String, dynamic> toMap() {
     return {
       'id': id,

@@ -3,7 +3,21 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mood_tracker/presentation/controllers/mood_controller.dart';
 
+/// Modal dialog that warns users data is stored locally on-device.
+///
+/// Side effects:
+/// - On confirmation, persists warning-acknowledged flag via
+///   `MoodController.markDataWarningAsShown()`.
+///
+/// Example:
+/// ```dart
+/// Get.dialog(
+///   const DataWarningDialog(),
+///   barrierDismissible: false,
+/// );
+/// ```
 class DataWarningDialog extends StatelessWidget {
+  /// Creates the local-data warning dialog.
   const DataWarningDialog({super.key});
 
   @override

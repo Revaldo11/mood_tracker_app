@@ -8,7 +8,14 @@ import '../../data/sources/local_database.dart';
 import '../controllers/mood_controller.dart';
 import 'main_shell.dart';
 
+/// Multi-step onboarding flow with optional first mood logging.
+///
+/// Side effects:
+/// - Persists onboarding step progress.
+/// - Marks onboarding completion in local storage.
+/// - Optionally creates first mood entry.
 class OnboardingScreen extends StatefulWidget {
+  /// Creates onboarding flow screen.
   const OnboardingScreen({super.key});
 
   @override

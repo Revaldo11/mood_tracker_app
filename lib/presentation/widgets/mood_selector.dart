@@ -5,7 +5,16 @@ import 'package:get/get.dart';
 
 import '../controllers/mood_controller.dart';
 
+/// Reactive mood option selector used in journaling flows.
+///
+/// Binds directly to [MoodController.selectedMood].
+///
+/// Example:
+/// ```dart
+/// const MoodSelector()
+/// ```
 class MoodSelector extends GetView<MoodController> {
+  /// Creates the mood selector widget.
   const MoodSelector({super.key});
 
   @override

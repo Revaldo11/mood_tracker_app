@@ -6,7 +6,12 @@ import '../../data/sources/local_database.dart';
 import 'main_shell.dart';
 import 'onboarding_screen.dart';
 
+/// Startup splash screen.
+///
+/// Shows branded intro animation, then routes user based on onboarding status
+/// stored in local database.
 class SplashScreen extends StatefulWidget {
+  /// Creates splash screen.
   const SplashScreen({super.key});
 
   @override

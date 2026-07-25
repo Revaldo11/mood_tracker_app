@@ -2,7 +2,9 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+/// Decorative animated wave background used in profile header section.
 class WaveBackground extends StatefulWidget {
+  /// Creates animated wave background widget.
   const WaveBackground({super.key});
 
   @override
