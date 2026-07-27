@@ -43,18 +43,22 @@ class ProfileScreen extends GetView<MoodController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Your mood profile',
+                            'Your Mood Insights',
                             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                   fontWeight: FontWeight.w800,
                                 ),
                           ),
                           const SizedBox(height: 4),
                           const Text(
-                            'Daily journal summary',
+                            'Your emotional journey at a glance',
                             style: TextStyle(color: Color(0xFF637381)),
                           ),
                         ],
                       ),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.settings_outlined, size: 30,),
                     ),
                   ],
                 ),
@@ -135,7 +139,7 @@ class ProfileScreen extends GetView<MoodController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Mood history',
+                  'Mood Timeline',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
