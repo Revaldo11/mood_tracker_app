@@ -1,6 +1,7 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../domain/models/mood_entry.dart';
+import '../../domain/models/user_profile.dart';
 import '../../domain/repositories/mood_repository.dart';
 import '../models/mood_entry_model.dart';
 
@@ -33,6 +34,8 @@ class LocalDatabase implements MoodRepository {
   static const _onboardingCompletedKey = 'onboarding_completed';
   static const _onboardingStartedAtKey = 'onboarding_started_at';
   static const _onboardingScreenKey = 'onboarding_screen';
+  static const _usersKey = 'users';
+  static const _currentUserIdKey = 'current_user_id';
 
   final Box _box;
 
@@ -83,9 +86,67 @@ class LocalDatabase implements MoodRepository {
     await _box.put(entry.id, model.toMap());
   }
 
+  List<UserProfile> get users {
+    final raw =
+        _box.get(_usersKey, defaultValue: <Map<String, dynamic>>[]) as List;
+    return raw.whereType<Map>().map(UserProfile.fromMap).toList();
+  }
+
+  UserProfile? get currentUser {
+    final currentUserId = _box.get(_currentUserIdKey) as String?;
+    if (currentUserId == null || currentUserId.isEmpty) {
+      return null;
+    }
+
+    for (final user in users) {
+      if (user.id == currentUserId) {
+        return user;
+      }
+    }
+
+    return null;
+  }
+
+  Future<void> registerUser(UserProfile user) async {
+    final existingUsers = users;
+    existingUsers.add(user);
+    await _box.put(
+      _usersKey,
+      existingUsers.map((item) => item.toMap()).toList(),
+    );
+    await setCurrentUserId(user.id);
+  }
+
+  Future<void> setCurrentUserId(String userId) async {
+    await _box.put(_currentUserIdKey, userId);
+  }
+
+  Future<void> clearCurrentUserId() async {
+    await _box.delete(_currentUserIdKey);
+  }
+
+  Future<void> clearOnboardingProgress() async {
+    await _box.delete(_onboardingScreenKey);
+    await _box.delete(_onboardingStartedAtKey);
+  }
+
+  Future<void> saveOnboardingCompleted(bool isCompleted) async {
+    final userId = currentUser?.id;
+    if (userId == null) {
+      await _box.put(_onboardingCompletedKey, isCompleted);
+      return;
+    }
+    await _box.put('${_onboardingCompletedKey}_$userId', isCompleted);
+  }
+
   /// Indicates whether onboarding has been marked complete.
   bool get isOnboardingCompleted {
-    return _box.get(_onboardingCompletedKey, defaultValue: false) as bool;
+    final userId = currentUser?.id;
+    if (userId == null) {
+      return _box.get(_onboardingCompletedKey, defaultValue: false) as bool;
+    }
+    final key = '${_onboardingCompletedKey}_$userId';
+    return _box.get(key, defaultValue: false) as bool;
   }
 
   /// Returns the persisted onboarding page index.
@@ -116,6 +177,6 @@ class LocalDatabase implements MoodRepository {
   /// Side effects:
   /// - Writes completion flag in local storage.
   Future<void> completeOnboarding() async {
-    await _box.put(_onboardingCompletedKey, true);
+    await saveOnboardingCompleted(true);
   }
 }

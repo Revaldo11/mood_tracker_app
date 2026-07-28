@@ -3,6 +3,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 
 import '../../data/sources/local_database.dart';
+import '../controllers/auth_controller.dart';
+import 'auth_screen.dart';
 import 'main_shell.dart';
 import 'onboarding_screen.dart';
 
@@ -27,6 +29,17 @@ class _SplashScreenState extends State<SplashScreen> {
         return;
       }
       final database = Get.find<LocalDatabase>();
+      final authController = Get.find<AuthController>();
+
+      if (authController.currentUser == null) {
+        Get.off(
+          () => const AuthScreen(),
+          transition: Transition.fadeIn,
+          duration: const Duration(milliseconds: 450),
+        );
+        return;
+      }
+
       Get.off(
         () => database.isOnboardingCompleted
             ? const MainShell()

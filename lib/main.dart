@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'data/sources/local_database.dart';
+import 'presentation/controllers/auth_controller.dart';
 import 'presentation/controllers/mood_controller.dart';
 import 'presentation/screens/splash_screen.dart';
 
@@ -22,6 +23,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final database = await LocalDatabase.init();
   Get.put(database);
+  Get.put(AuthController(database));
   Get.put(MoodController(database));
   runApp(const MoodTrackerApp());
 }

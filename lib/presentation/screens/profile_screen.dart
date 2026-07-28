@@ -3,10 +3,12 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../controllers/auth_controller.dart';
 import '../controllers/mood_controller.dart';
 import '../widgets/mood_chart.dart';
 import '../widgets/streak_counter.dart';
 import '../widgets/wave_background.dart';
+import 'auth_screen.dart';
 
 /// Statistics/profile screen for viewing mood trends and history.
 class ProfileScreen extends GetView<MoodController> {
@@ -15,6 +17,8 @@ class ProfileScreen extends GetView<MoodController> {
 
   @override
   Widget build(BuildContext context) {
+    final authController = Get.find<AuthController>();
+
     return SafeArea(
       child: ListView(
         padding: const EdgeInsets.all(16),
@@ -43,7 +47,8 @@ class ProfileScreen extends GetView<MoodController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Your Mood Insights',
+                            authController.currentUser?.username ??
+                                'Your Mood Insights',
                             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                   fontWeight: FontWeight.w800,
                                 ),
@@ -57,7 +62,31 @@ class ProfileScreen extends GetView<MoodController> {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        final shouldLogout = await Get.dialog<bool>(
+                          AlertDialog(
+                            title: const Text('Logout'),
+                            content: const Text('Apakah Anda yakin ingin logout?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Get.back(result: false),
+                                child: const Text('Batal'),
+                              ),
+                              FilledButton(
+                                onPressed: () => Get.back(result: true),
+                                child: const Text('Logout'),
+                              ),
+                            ],
+                          ),
+                        );
+
+                        if (shouldLogout != true) {
+                          return;
+                        }
+
+                        await authController.logout();
+                        Get.offAll(() => const AuthScreen());
+                      },
                       icon: Icon(Icons.settings_outlined, size: 30,),
                     ),
                   ],
