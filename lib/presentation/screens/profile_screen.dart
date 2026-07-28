@@ -85,7 +85,11 @@ class ProfileScreen extends GetView<MoodController> {
                         }
 
                         await authController.logout();
-                        Get.offAll(() => const AuthScreen());
+                        Get.offAll(
+                          () => const AuthScreen(),
+                          transition: Transition.fadeIn,
+                          duration: const Duration(milliseconds: 300),
+                        );
                       },
                       icon: Icon(Icons.settings_outlined, size: 30,),
                     ),

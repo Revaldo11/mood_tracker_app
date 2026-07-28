@@ -2,6 +2,7 @@ import 'package:bcrypt/bcrypt.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mood_tracker/constant.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../data/sources/local_database.dart';
@@ -190,6 +191,8 @@ class AuthController extends GetxController {
           createdAt: DateTime.now(),
         );
 
+        logger.w(newUser);
+
         await _database.registerUser(newUser);
         await _database.clearOnboardingProgress();
         await _database.saveOnboardingCompleted(false);
@@ -288,7 +291,15 @@ class AuthController extends GetxController {
 
   Future<void> logout() async {
     await _database.clearCurrentUserId();
-    await _database.clearOnboardingProgress();
+
+    loginEmailController.clear();
+    loginPasswordController.clear();
+    registerUsernameController.clear();
+    registerEmailController.clear();
+    registerPasswordController.clear();
+    registerConfirmPasswordController.clear();
+
+    loginObscure.value = true;
   }
 
   UserProfile? _findUserByEmail(String username) {

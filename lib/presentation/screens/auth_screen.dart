@@ -134,7 +134,7 @@ class _AuthScreenState extends State<AuthScreen> {
             () => TextFormField(
               controller: _controller.loginPasswordController,
               obscureText: _controller.loginObscure.value,
-              validator: _controller.validateLoginPassword,
+              // validator: _controller.validateLoginPassword,
               decoration: InputDecoration(
                 hintText: '••••••••',
                 suffixIcon: IconButton(
