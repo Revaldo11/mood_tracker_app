@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mood_tracker/constant/app_colors.dart';
 
 import '../controllers/auth_controller.dart';
 import 'onboarding_screen.dart';
@@ -24,9 +25,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Color(0xFFF9FBFA),
-              Color(0xFFF9FBFA),
-              Color(0xFFEFFFF6),
+              AppColors.paper,
+              AppColors.paper,
+              AppColors.paperDim,
             ],
           ),
         ),
@@ -39,7 +40,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Text(
                     'LUMINA',
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                      color: const Color(0xFF0D7A70),
+                      color: AppColors.accent,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 0.5,
                     ),
@@ -49,7 +50,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     'Create your account to start\ntracking your mood.',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: const Color(0xFF46514F),
+                      color: AppColors.inkSoft,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -62,7 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       vertical: 22,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.92),
+                      color: AppColors.paper.withValues(alpha: 0.92),
                       borderRadius: BorderRadius.circular(18),
                       boxShadow: [
                         BoxShadow(
@@ -157,7 +158,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   minHeight: 8,
                                   borderRadius: BorderRadius.circular(8),
                                   color: _controller.passwordStrengthColor,
-                                  backgroundColor: const Color(0xFFE4E7EC),
+                                  backgroundColor: AppColors.line,
                                 ),
                                 const SizedBox(height: 6),
                                 Text(
@@ -212,7 +213,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         Get.offAll(() => const OnboardingScreen());
                                       },
                                 style: FilledButton.styleFrom(
-                                  backgroundColor: const Color(0xFF0D7A70),
+                                  backgroundColor: AppColors.accent,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(16),
                                   ),
@@ -257,15 +258,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
       hintText: hint,
       prefixIcon: Icon(icon),
       filled: true,
-      fillColor: const Color(0xFFFCFDFC),
+      fillColor: AppColors.paperDim,
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: const BorderSide(color: Color(0xFFD7E0DF)),
+        borderSide: const BorderSide(color: AppColors.line),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
         borderSide: const BorderSide(
-          color: Color(0xFF0D7A70),
+          color: AppColors.accent,
           width: 1.4,
         ),
       ),

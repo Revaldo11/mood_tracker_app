@@ -3,6 +3,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mood_tracker/constant.dart';
+import 'package:mood_tracker/constant/app_colors.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../data/sources/local_database.dart';
@@ -127,12 +128,12 @@ class AuthController extends GetxController {
   Color get passwordStrengthColor {
     final strength = passwordStrength;
     if (strength <= 0.33) {
-      return const Color(0xFFFF6B6B);
+      return AppColors.error;
     }
     if (strength <= 0.66) {
-      return const Color(0xFFFFA500);
+      return MoodColors.meh;
     }
-    return const Color(0xFF6BCB77);
+    return AppColors.success;
   }
 
   Future<bool> login() async {

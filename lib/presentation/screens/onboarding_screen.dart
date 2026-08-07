@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:mood_tracker/constant/app_colors.dart';
 
 import '../../data/sources/local_database.dart';
 import '../controllers/mood_controller.dart';
@@ -168,7 +169,7 @@ class _IntroPage extends StatelessWidget {
             'LUMINA',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w800,
-                  color: const Color(0xFF1F2933),
+                  color: AppColors.ink,
                 ),
           ),
           const SizedBox(height: 6),
@@ -223,7 +224,7 @@ class _InfoPage extends StatelessWidget {
             Text(
               footer!,
               style: const TextStyle(
-                color: Color(0xFF637381),
+                color: AppColors.inkSoft,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -263,7 +264,7 @@ class _FirstMoodPage extends StatelessWidget {
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w800,
-                  color: const Color(0xFF1F2933),
+                  color: AppColors.ink,
                 ),
           ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.18),
           const Spacer(),
@@ -291,10 +292,10 @@ class _FirstMoodPage extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: selected
                             ? option.color.withValues(alpha: 0.24)
-                            : Colors.white,
+                            : AppColors.paper,
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
-                          color: selected ? option.color : const Color(0xFFE4E7EC),
+                          color: selected ? option.color : AppColors.line,
                           width: selected ? 1.5 : 1,
                         ),
                       ),
@@ -316,15 +317,15 @@ class _FirstMoodPage extends StatelessWidget {
             decoration: InputDecoration(
               hintText: 'Optional notes',
               filled: true,
-              fillColor: Colors.white,
+              fillColor: AppColors.paper,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: Color(0xFFE4E7EC)),
+                borderSide: const BorderSide(color: AppColors.line),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: const BorderSide(
-                  color: Color(0xFF6BCB77),
+                  color: AppColors.accent,
                   width: 1.5,
                 ),
               ),
@@ -349,14 +350,14 @@ class _OnboardingScaffold extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 24),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Color(0xFFE8FFF2),
-            Color(0xFFFFF7D5),
-            Color(0xFFFFEEF0),
+            MoodColors.sad.withValues(alpha: 0.15),
+            MoodColors.neutral.withValues(alpha: 0.15),
+            MoodColors.happy.withValues(alpha: 0.15),
           ],
         ),
       ),
@@ -380,7 +381,7 @@ class _AnimatedText extends StatelessWidget {
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.w800,
-                color: const Color(0xFF1F2933),
+                color: AppColors.ink,
               ),
         ).animate().fadeIn(delay: 200.ms, duration: 400.ms).slideY(begin: 0.18),
         if (subtitle != null) ...[
@@ -389,7 +390,7 @@ class _AnimatedText extends StatelessWidget {
             subtitle!,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: const Color(0xFF637381),
+                  color: AppColors.inkSoft,
                 ),
           ).animate().fadeIn(delay: 300.ms, duration: 400.ms),
         ],
@@ -416,7 +417,7 @@ class _StepIndicator extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 6),
           duration: const Duration(milliseconds: 200),
           decoration: BoxDecoration(
-            color: active ? const Color(0xFF6BCB77) : const Color(0xFFD0D5DD),
+            color: active ? AppColors.accent : AppColors.line,
             shape: BoxShape.circle,
           ),
         );
@@ -436,13 +437,13 @@ class _BenefitItem extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10),
       child: Row(
         children: [
-          const Icon(Icons.check_circle, color: Color(0xFF6BCB77), size: 22),
+          const Icon(Icons.check_circle, color: AppColors.accent, size: 22),
           const SizedBox(width: 10),
           Expanded(
             child: Text(
               text,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: const Color(0xFF344054),
+                    color: AppColors.ink,
                     fontWeight: FontWeight.w600,
                   ),
             ),

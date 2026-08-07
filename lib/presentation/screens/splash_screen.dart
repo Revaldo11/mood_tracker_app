@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
+import 'package:mood_tracker/constant/app_colors.dart';
 
 import '../../data/sources/local_database.dart';
 import '../controllers/auth_controller.dart';
@@ -55,14 +56,14 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Container(
         width: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Color(0xFFE8FFF2),
-              Color(0xFFFFF7D5),
-              Color(0xFFFFEEF0),
+              MoodColors.sad.withValues(alpha: 0.15),
+              MoodColors.neutral.withValues(alpha: 0.15),
+              MoodColors.happy.withValues(alpha: 0.15),
             ],
           ),
         ),
@@ -109,14 +110,14 @@ class _SplashScreenState extends State<SplashScreen> {
                 'LUMINA',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.w800,
-                      color: const Color(0xFF1F2933),
+                      color: AppColors.ink,
                     ),
               ).animate().fadeIn(duration: 500.ms).slideY(begin: 0.2),
               const SizedBox(height: 8),
               Text(
                 'Track your daily emotional journey',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: const Color(0xFF637381),
+                      color: AppColors.inkSoft,
                     ),
               ).animate().fadeIn(delay: 200.ms, duration: 500.ms),
               const Spacer(),
@@ -134,7 +135,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         minHeight: 8,
                         backgroundColor: Colors.white.withValues(alpha: 0.7),
                         valueColor: const AlwaysStoppedAnimation(
-                          Color(0xFF6BCB77),
+                          AppColors.accent,
                         ),
                       );
                     },

@@ -5,6 +5,7 @@ import 'data/sources/local_database.dart';
 import 'presentation/controllers/auth_controller.dart';
 import 'presentation/controllers/mood_controller.dart';
 import 'presentation/screens/splash_screen.dart';
+import 'constant/app_colors.dart';
 
 /// Application entry point.
 ///
@@ -40,13 +41,35 @@ class MoodTrackerApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF6BCB77),
+          seedColor: AppColors.accent,
           brightness: Brightness.light,
         ),
-        scaffoldBackgroundColor: const Color(0xFFF8FAF9),
+        scaffoldBackgroundColor: AppColors.paper,
+        dividerColor: AppColors.line,
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: AppColors.ink),
+          bodyMedium: TextStyle(color: AppColors.ink),
+          bodySmall: TextStyle(color: AppColors.inkSoft),
+        ),
         fontFamily: 'Inter',
         useMaterial3: true,
       ),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: AppColors.accent,
+          brightness: Brightness.dark,
+        ),
+        scaffoldBackgroundColor: AppColors.night,
+        dividerColor: AppColors.lineDark,
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: AppColors.mist),
+          bodyMedium: TextStyle(color: AppColors.mist),
+          bodySmall: TextStyle(color: AppColors.mist),
+        ),
+        fontFamily: 'Inter',
+        useMaterial3: true,
+      ),
+      themeMode: ThemeMode.system,
       home: const SplashScreen(),
     );
   }

@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:mood_tracker/constant/app_colors.dart';
 
 /// Decorative animated wave background used in profile header section.
 class WaveBackground extends StatefulWidget {
@@ -51,7 +52,7 @@ class _WavePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = const Color(0xFF98D8C8).withValues(alpha: 0.24)
+      ..color = MoodColors.good.withValues(alpha: 0.24)
       ..style = PaintingStyle.fill;
     final path = Path()..moveTo(0, size.height * 0.62);
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
+import 'package:mood_tracker/constant/app_colors.dart';
 import 'package:intl/intl.dart';
 
 import '../controllers/auth_controller.dart';
@@ -32,13 +33,13 @@ class ProfileScreen extends GetView<MoodController> {
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.86),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xFFE4E7EC)),
+                  border: Border.all(color: AppColors.line),
                 ),
                 child: Row(
                   children: [
-                    const CircleAvatar(
+                    CircleAvatar(
                       radius: 30,
-                      backgroundColor: Color(0xFFE8FFF2),
+                      backgroundColor: MoodColors.good.withValues(alpha: 0.2),
                       child: Text('😊', style: TextStyle(fontSize: 30)),
                     ),
                     const SizedBox(width: 14),
@@ -56,7 +57,7 @@ class ProfileScreen extends GetView<MoodController> {
                           const SizedBox(height: 4),
                           const Text(
                             'Your emotional journey at a glance',
-                            style: TextStyle(color: Color(0xFF637381)),
+                            style: TextStyle(color: AppColors.inkSoft),
                           ),
                         ],
                       ),
@@ -122,7 +123,7 @@ class ProfileScreen extends GetView<MoodController> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: const Color(0xFFE4E7EC)),
+              border: Border.all(color: AppColors.line),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,7 +167,7 @@ class ProfileScreen extends GetView<MoodController> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: const Color(0xFFE4E7EC)),
+              border: Border.all(color: AppColors.line),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -183,7 +184,7 @@ class ProfileScreen extends GetView<MoodController> {
                     if (controller.entries.isEmpty) {
                       return const Text(
                         'Start logging your mood to see history here.',
-                        style: TextStyle(color: Color(0xFF637381)),
+                        style: TextStyle(color: AppColors.inkSoft),
                       );
                     }
 
@@ -211,7 +212,7 @@ class ProfileScreen extends GetView<MoodController> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: const Color(0xFFF2F4F7),
+              color: AppColors.paperDim,
               borderRadius: BorderRadius.circular(8),
             ),
             child: const Row(
@@ -246,12 +247,12 @@ class _StatCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: const Color(0xFFE4E7EC)),
+        border: Border.all(color: AppColors.line),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: const Color(0xFF6BCB77)),
+          Icon(icon, color: AppColors.accent),
           const SizedBox(height: 12),
           Text(
             value,
@@ -259,7 +260,7 @@ class _StatCard extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                 ),
           ),
-          Text(title, style: const TextStyle(color: Color(0xFF637381))),
+          Text(title, style: const TextStyle(color: AppColors.inkSoft)),
         ],
       ),
     );

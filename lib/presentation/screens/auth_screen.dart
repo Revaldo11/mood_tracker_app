@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mood_tracker/constant/app_colors.dart';
 
 import '../controllers/auth_controller.dart';
 import 'main_shell.dart';
@@ -25,9 +26,9 @@ class _AuthScreenState extends State<AuthScreen> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Color(0xFFF9FBFA),
-              Color(0xFFF9FBFA),
-              Color(0xFFEFFFF6),
+              AppColors.paper,
+              AppColors.paper,
+              AppColors.paperDim,
             ],
           ),
         ),
@@ -40,7 +41,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   Text(
                     'LUMINA',
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                      color: const Color(0xFF0D7A70),
+                      color: AppColors.accent,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 0.5,
                     ),
@@ -50,7 +51,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     'Welcome back. Let’s find your light\nwithin.',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: const Color(0xFF46514F),
+                      color: AppColors.inkSoft,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -63,7 +64,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       vertical: 22,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.92),
+                      color: AppColors.paper.withValues(alpha: 0.92),
                       borderRadius: BorderRadius.circular(18),
                       boxShadow: [
                         BoxShadow(
@@ -93,7 +94,7 @@ class _AuthScreenState extends State<AuthScreen> {
           Text(
             'Email',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: const Color(0xFF46514F),
+              color: AppColors.inkSoft,
               fontSize: 15,
               fontWeight: FontWeight.w600,
             ),
@@ -106,15 +107,15 @@ class _AuthScreenState extends State<AuthScreen> {
             decoration: InputDecoration(
               hintText: 'example@mail.com',
               filled: true,
-              fillColor: const Color(0xFFFCFDFC),
+              fillColor: AppColors.paperDim,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(18),
-                borderSide: const BorderSide(color: Color(0xFFD7E0DF)),
+                borderSide: const BorderSide(color: AppColors.line),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(18),
                 borderSide: const BorderSide(
-                  color: Color(0xFF0D7A70),
+                  color: AppColors.accent,
                   width: 1.4,
                 ),
               ),
@@ -124,7 +125,7 @@ class _AuthScreenState extends State<AuthScreen> {
           Text(
             'Password',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: const Color(0xFF46514F),
+              color: AppColors.inkSoft,
               fontSize: 15,
               fontWeight: FontWeight.w600,
             ),
@@ -149,15 +150,15 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                 ),
                 filled: true,
-                fillColor: const Color(0xFFFCFDFC),
+                fillColor: AppColors.paperDim,
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(18),
-                  borderSide: const BorderSide(color: Color(0xFFD7E0DF)),
+                  borderSide: const BorderSide(color: AppColors.line),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(18),
                   borderSide: const BorderSide(
-                    color: Color(0xFF0D7A70),
+                    color: AppColors.accent,
                     width: 1.4,
                   ),
                 ),
@@ -219,7 +220,7 @@ class _AuthScreenState extends State<AuthScreen> {
             child: Text(
               'Versi 1.0.0',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: const Color(0xFF46514F),
+                color: AppColors.inkSoft,
                 fontWeight: FontWeight.w500,
                 fontSize: 15,
               ),
@@ -256,16 +257,16 @@ class _AuthScreenState extends State<AuthScreen> {
       height: 52,
       child: OutlinedButton.icon(
         onPressed: () {},
-        icon: Icon(icon, color: const Color(0xFF344054), size: 24),
+        icon: Icon(icon, color: AppColors.ink, size: 24),
         label: Text(
           text,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            color: const Color(0xFF1D2939),
+            color: AppColors.ink,
             fontWeight: FontWeight.w700,
           ),
         ),
         style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: Color(0xFFD0DBD8)),
+          side: const BorderSide(color: AppColors.line),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
