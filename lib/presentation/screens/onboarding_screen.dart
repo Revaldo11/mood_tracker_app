@@ -256,8 +256,13 @@ class _FirstMoodPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _OnboardingScaffold(
-      child: Column(
-        children: [
+      child: LayoutBuilder(
+        builder: (context, constraints) => SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: IntrinsicHeight(
+              child: Column(
+                children: [
           SizedBox(height: MediaQuery.of(context).size.height * 0.08),
           Text(
             'How are you feeling today?',
@@ -333,8 +338,12 @@ class _FirstMoodPage extends StatelessWidget {
           ),
           const Spacer(),
           _PrimaryButton(text: "Let's Go!", onPressed: onComplete),
-          const SizedBox(height: 24),
-        ],
+                  const SizedBox(height: 24),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

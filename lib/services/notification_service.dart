@@ -22,7 +22,7 @@ class NotificationService {
       return;
     }
 
-    const androidSettings = AndroidInitializationSettings('ic_launcher');
+    const androidSettings = AndroidInitializationSettings('ic_notification');
     const initializationSettings = InitializationSettings(
       android: androidSettings,
     );

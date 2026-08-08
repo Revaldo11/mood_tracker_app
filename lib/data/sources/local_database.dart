@@ -67,6 +67,12 @@ class LocalDatabase implements MoodRepository {
   Future<List<MoodEntry>> getEntries() async {
     final entries = _box.values
         .whereType<Map>()
+        .where((entry) =>
+            entry.containsKey('id') &&
+            entry.containsKey('mood') &&
+            entry.containsKey('notes') &&
+            entry.containsKey('timestamp') &&
+            entry.containsKey('emoji'))
         .map(MoodEntryModel.fromMap)
         .toList()
       ..sort((a, b) => b.timestamp.compareTo(a.timestamp));
