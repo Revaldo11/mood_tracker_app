@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:mood_tracker/constant/app_colors.dart';
 
 import '../controllers/mood_controller.dart';
 import '../widgets/mood_selector.dart';
@@ -29,14 +30,14 @@ class HomeScreen extends GetView<MoodController> {
                 _greeting(),
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.w800,
-                  color: const Color(0xFF1F2933),
+                  color: AppColors.ink,
                 ),
               ),
               const SizedBox(height: 6),
               Text(
                 DateFormat('EEEE, d MMMM').format(DateTime.now()),
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF637381),
+                  color: AppColors.inkSoft,
                 ),
               ),
               const SizedBox(height: 28),
@@ -57,7 +58,7 @@ class HomeScreen extends GetView<MoodController> {
                     boxShadow: [
                       BoxShadow(
                         color: controller.isNotesFocused.value
-                            ? const Color(0xFF6BCB77).withValues(alpha: 0.24)
+                            ? AppColors.focusGlow
                             : Colors.transparent,
                         blurRadius: 18,
                       ),
@@ -71,15 +72,15 @@ class HomeScreen extends GetView<MoodController> {
                     decoration: InputDecoration(
                       hintText: 'Write a short note...',
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: AppColors.paperDim,
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
-                        borderSide: const BorderSide(color: Color(0xFFE4E7EC)),
+                        borderSide: const BorderSide(color: AppColors.line),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: const BorderSide(
-                          color: Color(0xFF6BCB77),
+                          color: AppColors.accent,
                           width: 1.5,
                         ),
                       ),
@@ -105,7 +106,7 @@ class HomeScreen extends GetView<MoodController> {
                           width: 20,
                           height: 20,
                           child: CircularProgressIndicator(
-                              color: Color(0xFF6BCB77),
+                              color: AppColors.accent,
                               trackGap: 2,
                               strokeWidth: 3,
                               strokeCap: StrokeCap.round,
@@ -134,9 +135,9 @@ class HomeScreen extends GetView<MoodController> {
                       margin: const EdgeInsets.only(bottom: 10),
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: AppColors.paper,
                         borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: const Color(0xFFE4E7EC)),
+                        border: Border.all(color: AppColors.line),
                       ),
                       child: Row(
                         children: [
@@ -163,7 +164,7 @@ class HomeScreen extends GetView<MoodController> {
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
-                                      color: Color(0xFF637381),
+                                      color: AppColors.inkSoft,
                                     ),
                                   ),
                               ],
@@ -186,13 +187,7 @@ class HomeScreen extends GetView<MoodController> {
             emissionFrequency: 0.08,
             numberOfParticles: 24,
             gravity: 0.18,
-            colors: const [
-              Color(0xFFFF6B6B),
-              Color(0xFFFFA500),
-              Color(0xFFFFD700),
-              Color(0xFF98D8C8),
-              Color(0xFF6BCB77),
-            ],
+            colors: MoodColors.spectrum,
           ),
         ),
       ],
@@ -217,13 +212,13 @@ class _EmptyHistory extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.paper,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: const Color(0xFFE4E7EC)),
+        border: Border.all(color: AppColors.line),
       ),
       child: const Text(
         'No mood entries yet.',
-        style: TextStyle(color: Color(0xFF637381)),
+        style: TextStyle(color: AppColors.inkSoft),
       ),
     );
   }
