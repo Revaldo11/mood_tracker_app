@@ -36,6 +36,7 @@ class LocalDatabase implements MoodRepository {
   static const _onboardingScreenKey = 'onboarding_screen';
   static const _usersKey = 'users';
   static const _currentUserIdKey = 'current_user_id';
+  static const _notificationSettingsKey = 'notification_settings';
 
   final Box _box;
 
@@ -84,6 +85,14 @@ class LocalDatabase implements MoodRepository {
   Future<void> saveEntry(MoodEntry entry) async {
     final model = MoodEntryModel.fromEntry(entry);
     await _box.put(entry.id, model.toMap());
+  }
+
+  Map<dynamic, dynamic>? get notificationSettings {
+    return _box.get(_notificationSettingsKey) as Map<dynamic, dynamic>?;
+  }
+
+  Future<void> saveNotificationSettings(Map<String, dynamic> settings) async {
+    await _box.put(_notificationSettingsKey, settings);
   }
 
   List<UserProfile> get users {

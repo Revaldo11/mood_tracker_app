@@ -1,11 +1,17 @@
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:workmanager/workmanager.dart';
 
+import 'background_tasks/notification_task.dart';
 import 'data/sources/local_database.dart';
+import 'domain/repositories/notification_repository.dart';
 import 'presentation/controllers/auth_controller.dart';
 import 'presentation/controllers/mood_controller.dart';
 import 'presentation/screens/splash_screen.dart';
 import 'constant/app_colors.dart';
+import 'services/notification_service.dart';
 
 /// Application entry point.
 ///
@@ -23,6 +29,13 @@ import 'constant/app_colors.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final database = await LocalDatabase.init();
+  await NotificationService.instance.initNotifications();
+  await Workmanager().initialize(
+    callbackDispatcher,
+    isInDebugMode: kDebugMode,
+  );
+  await AndroidAlarmManager.initialize();
+  await NotificationRepository(database).scheduleNotificationIfEnabled();
   Get.put(database);
   Get.put(AuthController(database));
   Get.put(MoodController(database));

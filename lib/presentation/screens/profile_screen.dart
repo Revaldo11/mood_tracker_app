@@ -10,6 +10,7 @@ import '../widgets/mood_chart.dart';
 import '../widgets/streak_counter.dart';
 import '../widgets/wave_background.dart';
 import 'auth_screen.dart';
+import 'settings_screen.dart';
 
 /// Statistics/profile screen for viewing mood trends and history.
 class ProfileScreen extends GetView<MoodController> {
@@ -63,6 +64,10 @@ class ProfileScreen extends GetView<MoodController> {
                       ),
                     ),
                     IconButton(
+                      onPressed: () => Get.to(() => const SettingsScreen()),
+                      icon: Icon(Icons.settings_outlined, size: 30,),
+                    ),
+                    IconButton(
                       onPressed: () async {
                         final shouldLogout = await Get.dialog<bool>(
                           AlertDialog(
@@ -92,7 +97,7 @@ class ProfileScreen extends GetView<MoodController> {
                           duration: const Duration(milliseconds: 300),
                         );
                       },
-                      icon: Icon(Icons.settings_outlined, size: 30,),
+                      icon: Icon(Icons.logout, size: 28,),
                     ),
                   ],
                 ),

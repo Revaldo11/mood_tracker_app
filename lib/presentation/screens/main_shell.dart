@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/mood_controller.dart';
+import '../../services/notification_service.dart';
 import 'home_screen.dart';
 import 'profile_screen.dart';
 
@@ -18,6 +19,7 @@ class MainShell extends GetView<MoodController> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      NotificationService.instance.consumePendingMoodLogging();
       if (controller.shouldShowWarning()) {
         controller.showDataWarningDialog();
       }
