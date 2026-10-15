@@ -303,9 +303,9 @@ class AuthController extends GetxController {
     loginObscure.value = true;
   }
 
-  UserProfile? _findUserByEmail(String username) {
+  UserProfile? _findUserByEmail(String email) {
     for (final user in _database.users) {
-      if (user.username.toLowerCase() == username) {
+      if (user.email?.toLowerCase() == email.toLowerCase()) {
         return user;
       }
     }

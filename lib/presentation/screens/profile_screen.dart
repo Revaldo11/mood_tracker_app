@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:mood_tracker/constant/app_colors.dart';
 import 'package:intl/intl.dart';
 
+import '../../domain/models/mood_entry.dart';
 import '../controllers/auth_controller.dart';
 import '../controllers/mood_controller.dart';
 import '../widgets/mood_chart.dart';
@@ -200,6 +201,25 @@ class ProfileScreen extends GetView<MoodController> {
                             DateFormat('EEE, d MMM yyyy').format(entry.timestamp),
                           ),
                           subtitle: entry.notes.isEmpty ? null : Text(entry.notes),
+                          trailing: PopupMenuButton<String>(
+                            onSelected: (action) {
+                              if (action == 'edit') {
+                                _showEditMoodDialog(entry);
+                              } else {
+                                _confirmDeleteMood(entry);
+                              }
+                            },
+                            itemBuilder: (context) => const [
+                              PopupMenuItem(
+                                value: 'edit',
+                                child: Text('Edit'),
+                              ),
+                              PopupMenuItem(
+                                value: 'delete',
+                                child: Text('Delete'),
+                              ),
+                            ],
+                          ),
                         );
                       }).toList(),
                     );
@@ -226,6 +246,103 @@ class ProfileScreen extends GetView<MoodController> {
         ],
       ),
     );
+  }
+
+  Future<void> _showEditMoodDialog(
+    MoodEntry entry,
+  ) async {
+    final notesController = TextEditingController(text: entry.notes);
+    var selectedMood = controller.moodOptionByValue(entry.mood);
+
+    final mood = await Get.dialog<MoodOption>(
+      AlertDialog(
+        title: const Text('Edit mood'),
+        content: StatefulBuilder(
+          builder: (context, setState) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                DropdownButtonFormField<MoodOption>(
+                  value: selectedMood,
+                  decoration: const InputDecoration(labelText: 'Mood'),
+                  items: controller.moods
+                      .map(
+                        (option) => DropdownMenuItem(
+                          value: option,
+                          child: Text('${option.emoji} ${option.label}'),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() => selectedMood = value);
+                    }
+                  },
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: notesController,
+                  maxLines: 4,
+                  maxLength: 180,
+                  decoration: const InputDecoration(
+                    labelText: 'Note',
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Get.back(result: selectedMood),
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+    );
+
+    final notes = notesController.text;
+    notesController.dispose();
+    if (mood == null) {
+      return;
+    }
+
+    await controller.updateMood(
+      entry,
+      mood: mood,
+      notes: notes,
+    );
+  }
+
+  Future<void> _confirmDeleteMood(
+    MoodEntry entry,
+  ) async {
+    final shouldDelete = await Get.dialog<bool>(
+      AlertDialog(
+        title: const Text('Delete mood?'),
+        content: const Text('This mood entry will be permanently deleted.'),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(result: false),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Get.back(result: true),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (shouldDelete != true) {
+      return;
+    }
+
+    await controller.removeMood(entry.id);
   }
 }
 

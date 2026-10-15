@@ -157,6 +157,24 @@ class MoodController extends GetxController {
     }
   }
 
+  Future<void> updateMood(
+    MoodEntry entry, {
+    required MoodOption mood,
+    required String notes,
+  }) async {
+    await _repository.saveEntry(
+      MoodEntry(
+        id: entry.id,
+        mood: mood.value,
+        notes: notes.trim(),
+        timestamp: entry.timestamp,
+        emoji: mood.emoji,
+        intensity: entry.intensity,
+      ),
+    );
+    await loadEntries();
+  }
+
   /// Returns up to three most recent entries.
   List<MoodEntry> get recentEntries => entries.take(3).toList();
 

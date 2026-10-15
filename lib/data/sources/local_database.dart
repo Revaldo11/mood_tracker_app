@@ -64,8 +64,14 @@ class LocalDatabase implements MoodRepository {
   /// Throws:
   /// - Parsing/storage exceptions if a stored payload is invalid.
   Future<List<MoodEntry>> getEntries() async {
+    final userId = currentUser?.id;
+    if (userId == null) {
+      return [];
+    }
+
     final entries = _box.values
         .whereType<Map>()
+        .where((map) => map['userId'] == userId)
         .map(MoodEntryModel.fromMap)
         .toList()
       ..sort((a, b) => b.timestamp.compareTo(a.timestamp));
@@ -82,13 +88,26 @@ class LocalDatabase implements MoodRepository {
   /// Throws:
   /// - Hive write exceptions.
   Future<void> saveEntry(MoodEntry entry) async {
+    final userId = currentUser?.id;
+    if (userId == null) {
+      throw StateError('Cannot save mood without an active user.');
+    }
+
     final model = MoodEntryModel.fromEntry(entry);
-    await _box.put(entry.id, model.toMap());
+    await _box.put(
+      '${userId}_${entry.id}',
+      {...model.toMap(), 'userId': userId},
+    );
   }
 
   @override
   Future<void> removeEntry(String id) async {
-    await _box.delete(id);
+    final userId = currentUser?.id;
+    if (userId == null) {
+      return;
+    }
+
+    await _box.delete('${userId}_$id');
   }
 
   List<UserProfile> get users {
