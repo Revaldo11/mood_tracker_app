@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:mood_tracker/constant/app_colors.dart';
 
 import '../controllers/mood_controller.dart';
 
@@ -85,7 +86,7 @@ class MoodChart extends GetView<MoodController> {
                       child: Text(
                         DateFormat('E').format(dates[index]),
                         style: const TextStyle(
-                          color: Color(0xFF637381),
+                          color: AppColors.inkSoft,
                           fontSize: 12,
                         ),
                       ),
@@ -106,11 +107,11 @@ class MoodChart extends GetView<MoodController> {
                     toY: mood.toDouble(),
                     width: 18,
                     borderRadius: BorderRadius.circular(8),
-                    color: option?.color ?? const Color(0xFFE4E7EC),
+                    color: option?.color ?? AppColors.line,
                     backDrawRodData: BackgroundBarChartRodData(
                       show: true,
                       toY: 5,
-                      color: const Color(0xFFF2F4F7),
+                      color: AppColors.paperDim,
                     ),
                   ),
                 ],

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mood_tracker/constant/constant.dart';
+import 'package:mood_tracker/constant/app_colors.dart';
 import 'package:mood_tracker/shared/dialog/data_warning_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,11 +43,11 @@ class MoodController extends GetxController {
   final touchedChartDate = Rxn<DateTime>();
 
   final moods = const [
-    MoodOption(1, '😢', Color(0xFFFF6B6B), 'Sad'),
-    MoodOption(2, '😕', Color(0xFFFFA500), 'Meh'),
-    MoodOption(3, '😐', Color(0xFFFFD700), 'Neutral'),
-    MoodOption(4, '🙂', Color(0xFF98D8C8), 'Good'),
-    MoodOption(5, '😊', Color(0xFF6BCB77), 'Happy'),
+    MoodOption(1, '😢', MoodColors.sad, 'Sad'),
+    MoodOption(2, '😕', MoodColors.meh, 'Meh'),
+    MoodOption(3, '😐', MoodColors.neutral, 'Neutral'),
+    MoodOption(4, '🙂', MoodColors.good, 'Good'),
+    MoodOption(5, '😊', MoodColors.happy, 'Happy'),
   ];
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:mood_tracker/constant/app_colors.dart';
 import 'package:mood_tracker/presentation/controllers/mood_controller.dart';
 
 /// Modal dialog that warns users data is stored locally on-device.
@@ -204,7 +205,7 @@ class DataWarningDialog extends StatelessWidget {
             Get.back();
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF6BCB77),
+            backgroundColor: AppColors.accent,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),

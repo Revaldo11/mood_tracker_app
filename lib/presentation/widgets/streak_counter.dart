@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:mood_tracker/constant/app_colors.dart';
 
 /// Animated card showing current consecutive mood logging streak.
 class StreakCounter extends StatelessWidget {
@@ -14,14 +15,14 @@ class StreakCounter extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.paper,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: const Color(0xFFE4E7EC)),
+        border: Border.all(color: AppColors.line),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.local_fire_department, color: Color(0xFFFFA500)),
+          const Icon(Icons.local_fire_department, color: AppColors.accent),
           const SizedBox(height: 12),
           TweenAnimationBuilder<int>(
             tween: IntTween(begin: 0, end: value),
@@ -35,7 +36,7 @@ class StreakCounter extends StatelessWidget {
               );
             },
           ),
-          const Text('Day streak', style: TextStyle(color: Color(0xFF637381))),
+          const Text('Day streak', style: TextStyle(color: AppColors.inkSoft)),
         ],
       ),
     ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.14);

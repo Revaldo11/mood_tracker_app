@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
+import 'package:mood_tracker/constant/app_colors.dart';
 
 import '../controllers/mood_controller.dart';
 
@@ -41,10 +42,10 @@ class MoodSelector extends GetView<MoodController> {
                 decoration: BoxDecoration(
                   color: selected
                       ? option.color.withValues(alpha: 0.24)
-                      : Colors.white,
+                      : AppColors.paper,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: selected ? option.color : const Color(0xFFE4E7EC),
+                    color: selected ? option.color : AppColors.line,
                     width: selected ? 1.5 : 1,
                   ),
                   boxShadow: [
