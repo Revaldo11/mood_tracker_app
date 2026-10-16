@@ -37,4 +37,9 @@ class _FakeMoodRepository implements MoodRepository {
   Future<void> saveEntry(MoodEntry entry) async {
     savedEntries.add(entry);
   }
+
+  @override
+  Future<void> removeEntry(String id) async {
+    savedEntries.removeWhere((entry) => entry.id == id);
+  }
 }

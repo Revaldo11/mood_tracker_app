@@ -121,6 +121,31 @@ class MoodController extends GetxController {
       confettiController.play();
       await loadEntries();
 
+      if (!Get.testMode) {
+        Get.snackbar(
+          title,
+          message,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: const EdgeInsets.all(16),
+          borderRadius: 8,
+          duration: const Duration(seconds: 2),
+        );
+      }
+
+    } finally {
+      isLoadingSubmit.value = false;
+    }
+  }
+
+  Future<void> removeMood(
+    String id, {
+    String title = 'Mood removed',
+    String message = 'Your mood entry has been removed.',
+  }) async {
+    await _repository.removeEntry(id);
+    await loadEntries();
+
+    if (!Get.testMode) {
       Get.snackbar(
         title,
         message,
@@ -129,10 +154,25 @@ class MoodController extends GetxController {
         borderRadius: 8,
         duration: const Duration(seconds: 2),
       );
-
-    } finally {
-      isLoadingSubmit.value = false;
     }
+  }
+
+  Future<void> updateMood(
+    MoodEntry entry, {
+    required MoodOption mood,
+    required String notes,
+  }) async {
+    await _repository.saveEntry(
+      MoodEntry(
+        id: entry.id,
+        mood: mood.value,
+        notes: notes.trim(),
+        timestamp: entry.timestamp,
+        emoji: mood.emoji,
+        intensity: entry.intensity,
+      ),
+    );
+    await loadEntries();
   }
 
   /// Returns up to three most recent entries.

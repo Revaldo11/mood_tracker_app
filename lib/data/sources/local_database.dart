@@ -36,6 +36,9 @@ class LocalDatabase implements MoodRepository {
   static const _onboardingScreenKey = 'onboarding_screen';
   static const _usersKey = 'users';
   static const _currentUserIdKey = 'current_user_id';
+  static const _driveEmailKey = 'drive_email';
+  static const _driveFileIdKey = 'drive_file_id';
+  static const _driveLastBackupAtKey = 'drive_last_backup_at';
 
   final Box _box;
 
@@ -64,8 +67,14 @@ class LocalDatabase implements MoodRepository {
   /// Throws:
   /// - Parsing/storage exceptions if a stored payload is invalid.
   Future<List<MoodEntry>> getEntries() async {
+    final userId = currentUser?.id;
+    if (userId == null) {
+      return [];
+    }
+
     final entries = _box.values
         .whereType<Map>()
+        .where((map) => map['userId'] == userId)
         .map(MoodEntryModel.fromMap)
         .toList()
       ..sort((a, b) => b.timestamp.compareTo(a.timestamp));
@@ -82,9 +91,75 @@ class LocalDatabase implements MoodRepository {
   /// Throws:
   /// - Hive write exceptions.
   Future<void> saveEntry(MoodEntry entry) async {
+    final userId = currentUser?.id;
+    if (userId == null) {
+      throw StateError('Cannot save mood without an active user.');
+    }
+
     final model = MoodEntryModel.fromEntry(entry);
-    await _box.put(entry.id, model.toMap());
+    await _box.put(
+      '${userId}_${entry.id}',
+      {...model.toMap(), 'userId': userId},
+    );
   }
+
+  @override
+  Future<void> removeEntry(String id) async {
+    final userId = currentUser?.id;
+    if (userId == null) {
+      return;
+    }
+
+    await _box.delete('${userId}_$id');
+  }
+
+  String? get driveEmail => _getCurrentUserValue(_driveEmailKey) as String?;
+
+  String? get driveFileId => _getCurrentUserValue(_driveFileIdKey) as String?;
+
+  DateTime? get driveLastBackupAt {
+    final value = _getCurrentUserValue(_driveLastBackupAtKey) as String?;
+    return value == null ? null : DateTime.tryParse(value);
+  }
+
+  Future<void> saveDriveMetadata({
+    String? email,
+    String? fileId,
+    DateTime? lastBackupAt,
+  }) async {
+    final userId = currentUser?.id;
+    if (userId == null) {
+      throw StateError('Cannot save Drive metadata without an active user.');
+    }
+
+    if (email != null) {
+      await _box.put(_userKey(_driveEmailKey, userId), email);
+    }
+    if (fileId != null) {
+      await _box.put(_userKey(_driveFileIdKey, userId), fileId);
+    }
+    if (lastBackupAt != null) {
+      await _box.put(
+        _userKey(_driveLastBackupAtKey, userId),
+        lastBackupAt.toIso8601String(),
+      );
+    }
+  }
+
+  Future<void> clearDriveFileId() async {
+    final userId = currentUser?.id;
+    if (userId != null) {
+      await _box.delete(_userKey(_driveFileIdKey, userId));
+      await _box.delete(_userKey(_driveLastBackupAtKey, userId));
+    }
+  }
+
+  dynamic _getCurrentUserValue(String key) {
+    final userId = currentUser?.id;
+    return userId == null ? null : _box.get(_userKey(key, userId));
+  }
+
+  String _userKey(String key, String userId) => '${key}_$userId';
 
   List<UserProfile> get users {
     final raw =
