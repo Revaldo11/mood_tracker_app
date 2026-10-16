@@ -20,67 +20,109 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              AppColors.paper,
-              AppColors.paper,
-              AppColors.paperDim,
-            ],
-          ),
-        ),
-        child: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
-              child: Column(
-                children: [
-                  Text(
-                    'LUMINA',
-                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                      color: AppColors.accent,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 0.5,
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  Text(
-                    'Welcome back. Let’s find your light\nwithin.',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: AppColors.inkSoft,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  const SizedBox(height: 28),
-                  Container(
-                    width: double.infinity,
-                    constraints: const BoxConstraints(maxWidth: 540),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 18,
-                      vertical: 22,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.paper.withValues(alpha: 0.92),
-                      borderRadius: BorderRadius.circular(18),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.07),
-                          blurRadius: 36,
-                          offset: const Offset(0, 16),
-                        ),
-                      ],
-                    ),
-                    child: _buildLoginForm(),
-                  ),
-                ],
+      body: Stack(
+        children: [
+          Container(color: const Color(0xFFF9FCF7)),
+          Positioned(
+            top: -100,
+            left: -90,
+            child: Container(
+              width: 260,
+              height: 260,
+              decoration: BoxDecoration(
+                color: const Color(0xFFDDF3DC),
+                borderRadius: BorderRadius.circular(140),
               ),
             ),
           ),
-        ),
+          Positioned(
+            right: -110,
+            bottom: -100,
+            child: Container(
+              width: 280,
+              height: 280,
+              decoration: BoxDecoration(
+                color: const Color(0xFFE6F6E2),
+                borderRadius: BorderRadius.circular(150),
+              ),
+            ),
+          ),
+          SafeArea(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 24),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 430),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 74,
+                          height: 74,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF4CAF63),
+                            borderRadius: BorderRadius.circular(24),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF4CAF63).withValues(alpha: 0.22),
+                                blurRadius: 20,
+                                offset: const Offset(0, 10),
+                              ),
+                            ],
+                          ),
+                          child: const Icon(
+                            Icons.favorite_rounded,
+                            color: Colors.white,
+                            size: 38,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 26),
+                      Center(
+                        child: Text(
+                          'Welcome back',
+                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                            color: const Color(0xFF17231D),
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Center(
+                        child: Text(
+                          'Continue your emotional journey with LUMINA.',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color: const Color(0xFF718075),
+                            height: 1.4,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.fromLTRB(20, 22, 20, 20),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.94),
+                          borderRadius: BorderRadius.circular(28),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF35613C).withValues(alpha: 0.10),
+                              blurRadius: 30,
+                              offset: const Offset(0, 14),
+                            ),
+                          ],
+                        ),
+                        child: _buildLoginForm(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -94,7 +136,7 @@ class _AuthScreenState extends State<AuthScreen> {
           Text(
             'Email',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: AppColors.inkSoft,
+              color: const Color(0xFF304237),
               fontSize: 15,
               fontWeight: FontWeight.w600,
             ),
@@ -107,17 +149,14 @@ class _AuthScreenState extends State<AuthScreen> {
             decoration: InputDecoration(
               hintText: 'example@mail.com',
               filled: true,
-              fillColor: AppColors.paperDim,
+              fillColor: const Color(0xFFF5F9F3),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(18),
-                borderSide: const BorderSide(color: AppColors.line),
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Color(0xFFDDE9DC)),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(18),
-                borderSide: const BorderSide(
-                  color: AppColors.accent,
-                  width: 1.4,
-                ),
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Color(0xFF4CAF63), width: 1.4),
               ),
             ),
           ),
@@ -125,7 +164,7 @@ class _AuthScreenState extends State<AuthScreen> {
           Text(
             'Password',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: AppColors.inkSoft,
+              color: const Color(0xFF304237),
               fontSize: 15,
               fontWeight: FontWeight.w600,
             ),
@@ -150,17 +189,14 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                 ),
                 filled: true,
-                fillColor: AppColors.paperDim,
+                fillColor: const Color(0xFFF5F9F3),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(18),
-                  borderSide: const BorderSide(color: AppColors.line),
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: const BorderSide(color: Color(0xFFDDE9DC)),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(18),
-                  borderSide: const BorderSide(
-                    color: AppColors.accent,
-                    width: 1.4,
-                  ),
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: const BorderSide(color: Color(0xFF4CAF63), width: 1.4),
                 ),
               ),
             ),
@@ -190,8 +226,10 @@ class _AuthScreenState extends State<AuthScreen> {
                         );
                       },
                 style: FilledButton.styleFrom(
+                  backgroundColor: const Color(0xFF4CAF63),
+                  foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                 ),
                 child: _controller.isLoginLoading.value
@@ -220,7 +258,7 @@ class _AuthScreenState extends State<AuthScreen> {
             child: Text(
               'Versi 1.0.0',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppColors.inkSoft,
+                color: const Color(0xFF8A998D),
                 fontWeight: FontWeight.w500,
                 fontSize: 15,
               ),

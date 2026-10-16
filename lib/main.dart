@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'data/sources/local_database.dart';
+import 'data/sources/google_drive_backup_service.dart';
+import 'presentation/controllers/backup_controller.dart';
 import 'presentation/controllers/auth_controller.dart';
 import 'presentation/controllers/mood_controller.dart';
 import 'presentation/screens/splash_screen.dart';
@@ -25,7 +27,9 @@ Future<void> main() async {
   final database = await LocalDatabase.init();
   Get.put(database);
   Get.put(AuthController(database));
-  Get.put(MoodController(database));
+  final moodController = Get.put(MoodController(database));
+  final driveService = Get.put(GoogleDriveBackupService());
+  Get.put(BackupController(database, driveService, moodController));
   runApp(const MoodTrackerApp());
 }
 
@@ -43,6 +47,13 @@ class MoodTrackerApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: AppColors.accent,
           brightness: Brightness.light,
+        ).copyWith(
+          primary: AppColors.accent,
+          onPrimary: Colors.white,
+          surface: AppColors.paper,
+          onSurface: AppColors.ink,
+          outline: AppColors.line,
+          error: AppColors.error,
         ),
         scaffoldBackgroundColor: AppColors.paper,
         dividerColor: AppColors.line,
@@ -58,6 +69,13 @@ class MoodTrackerApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: AppColors.accent,
           brightness: Brightness.dark,
+        ).copyWith(
+          primary: AppColors.accent,
+          onPrimary: Colors.white,
+          surface: AppColors.night,
+          onSurface: AppColors.mist,
+          outline: AppColors.lineDark,
+          error: AppColors.error,
         ),
         scaffoldBackgroundColor: AppColors.night,
         dividerColor: AppColors.lineDark,

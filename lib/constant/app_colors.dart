@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
 
 class MoodColors {
-  static const sad = Color(0xFF4A5578);
-  static const meh = Color(0xFF8B7098);
-  static const neutral = Color(0xFFC9A87A);
-  static const good = Color(0xFF7FA88F);
-  static const happy = Color(0xFFE8B94A);
+  static const sad = Color(0xFF5B6F7A);
+  static const meh = Color(0xFF8D7BA6);
+  static const neutral = Color(0xFFC8A36A);
+  static const good = Color(0xFF4CAF63);
+  static const happy = Color(0xFFF4C95D);
 
   static const List<Color> spectrum = [sad, meh, neutral, good, happy];
 }
 
 class AppColors {
-  static const paper = Color(0xFFFAF6EF);
-  static const paperDim = Color(0xFFF0EAE0);
-  static const ink = Color(0xFF2B2A2E);
-  static const inkSoft = Color(0xFF6B6870);
-  static const night = Color(0xFF1C1B22);
-  static const nightDim = Color(0xFF26242E);
-  static const mist = Color(0xFFF2EFEA);
-  static const line = Color(0xFFE4DDD0);
-  static const lineDark = Color(0x99393744);
+  static const paper = Color(0xFFF9FCF7);
+  static const paperDim = Color(0xFFF0F7EE);
+  static const ink = Color(0xFF17231D);
+  static const inkSoft = Color(0xFF718075);
+  static const night = Color(0xFF142019);
+  static const nightDim = Color(0xFF1D2B22);
+  static const mist = Color(0xFFF4FAF2);
+  static const line = Color(0xFFDDE9DC);
+  static const lineDark = Color(0x99607064);
 
-  static const accent = Color(0xFFE8734A);
-  static const accentPressed = Color(0xFFC85A34);
+  static const accent = Color(0xFF4CAF63);
+  static const accentPressed = Color(0xFF368A4A);
   static const success = MoodColors.good;
-  static const error = Color(0xFFC24545);
-  static const focusGlow = Color(0x4DE8734A);
+  static const error = Color(0xFFC84B4B);
+  static const focusGlow = Color(0x4D4CAF63);
 }
